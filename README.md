@@ -1,6 +1,5 @@
 # AugmentationPipeline
 
-[![PyPI](https://img.shields.io/pypi/v/augmentationpipeline)](https://pypi.org/project/augmentationpipeline)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.6%2B-green)](https://www.python.org/)
 
