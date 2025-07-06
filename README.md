@@ -116,7 +116,7 @@ Y = df["Intensity"].values
 
 # 2. Atur parameter augmentasi (sama seperti argumen CLI)
 params = {
-    'time_shift':    {'range': (-0.1, 0.1), 'p': 0.5},
+    'X_shift':       {'range': (-0.1, 0.1), 'p': 0.5},
     'noise_std':     {'range': (0.005, 0.02), 'p': 0.5},
     'scale':         {'range': (0.95, 1.05), 'p': 0.5},
     'baseline':      {'range': (-0.01, 0.01), 'p': 0.5, 'nonlinear': False},
