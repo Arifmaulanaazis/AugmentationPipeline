@@ -76,8 +76,8 @@ python augmentation.py \
 | `-n`, `--n_samples`            |           | `int`     | `1`             | Jumlah sampel augmentasi.                        |
 | `-s`, `--seed`                 |           | `int`     | `None`          | Seed untuk reproduksibilitas.                    |
 | `-ka`, `--kolom_augmentasi`    |           | `str`     | `Augmentasi`    | Prefix kolom hasil augmentasi.                   |
-| `-tr`, `--time_shift_range`    |           | `float` 2 | `[-0.1, 0.1]`   | Rentang pergeseran waktu.                        |
-| `-tp`, `--time_shift_p`        |           | `float`   | `0.5`           | Probabilitas apply time shift.                   |
+| `-tr`, `--X_shift_range`       |           | `float` 2 | `[-0.1, 0.1]`   | Rentang pergeseran X.                            |
+| `-tp`, `--X_shift_p`           |           | `float`   | `0.5`           | Probabilitas apply X shift.                      |
 | `-nr`, `--noise_std_range`     |           | `float` 2 | `[0.005, 0.02]` | Rentang σ noise Gaussian.                        |
 | `-np`, `--noise_std_p`         |           | `float`   | `0.5`           | Probabilitas menambahkan noise.                  |
 | `-scr`, `--scale_range`        |           | `float` 2 | `[0.95, 1.05]`  | Rentang faktor scaling.                          |
