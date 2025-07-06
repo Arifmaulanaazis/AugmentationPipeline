@@ -67,7 +67,7 @@ class AugmentationPipeline:
         Argumen:
             params (dict): Dict konfigurasi augmentasi. Contoh format:
                 {
-                    'time_shift':    {'range': (min, max), 'p': prob},
+                    'X_shift':       {'range': (min, max), 'p': prob},
                     'noise_std':     {'range': (min, max), 'p': prob},
                     'scale':         {'range': (min, max), 'p': prob},
                     'baseline':      {'range': (min, max), 'p': prob, 'nonlinear': bool},
@@ -108,24 +108,24 @@ class AugmentationPipeline:
         noise = np.random.normal(0, std, size=Y.shape)
         return Y + noise
 
-    def _shift_retention_time(self, X: np.ndarray, shift_range: tuple) -> np.ndarray:
+    def _shift_X(self, X: np.ndarray, shift_range: tuple) -> np.ndarray:
         """
-        Geser sumbu waktu (retention time) X secara linier.
+        Geser sumbu X secara linier.
 
-        Transformasi ini digunakan untuk mensimulasikan variasi waktu retensi pada
-        instrumen kromatografi, misalnya pergeseran kecil karena perubahan suhu atau
+        Transformasi ini digunakan untuk mensimulasikan variasi waktu retensi, Suhu pada
+        instrumen kromatografi, DSC, misalnya pergeseran kecil karena perubahan suhu atau
         kondisi kolom.
 
         Argumen:
-            X (np.ndarray): Vektor satu dimensi sumbu waktu asli.
-            shift_range (tuple(float, float)): Rentang (min, max) pergeseran waktu.
+            X (np.ndarray): Vektor satu dimensi sumbu X asli.
+            shift_range (tuple(float, float)): Rentang (min, max) pergeseran X.
 
         Returns:
-            np.ndarray: Vektor waktu yang sudah digeser.
+            np.ndarray: Vektor X yang sudah digeser.
 
         Perilaku:
-            - Pergeseran positif memajukan waktu deteksi puncak.
-            - Pergeseran negatif menunda time stamp puncak.
+            - Pergeseran positif memajukan X deteksi puncak.
+            - Pergeseran negatif memundurkan X stamp puncak.
             - Jika rentang kecil, efek geser minimal.
         """
         dt = np.random.uniform(*shift_range)
@@ -298,8 +298,8 @@ class AugmentationPipeline:
 
         for name in transforms:
             cfg = self.params[name]
-            if name == 'time_shift':
-                X_aug = self._shift_retention_time(X_aug, cfg['range'])
+            if name == 'X_shift':
+                X_aug = self._shift_X(X_aug, cfg['range'])
             elif name == 'noise_std':
                 Y_aug = self._add_gaussian_noise(Y_aug, cfg['range'])
             elif name == 'scale':
@@ -364,8 +364,8 @@ def parse_args():
     parser.add_argument( '-s',    '--seed',                type=int,              default=None,           help='Seed untuk reproducibility' )
     parser.add_argument( '-ka',   '--kolom_augmentasi',    type=str,              default='Augmentasi',   help='Prefix untuk nama kolom augmentasi' )
     # Argumen parameter augmentasi
-    parser.add_argument( '-tr',   '--time_shift_range',     type=float, nargs=2,   default=[-0.1,0.1],     help='Rentang shift waktu' )
-    parser.add_argument( '-tp',   '--time_shift_p',         type=float,             default=0.5,            help='Probabilitas apply time shift' )
+    parser.add_argument( '-tr',   '--X_shift_range',        type=float, nargs=2,   default=[-0.1,0.1],     help='Rentang shift X' )
+    parser.add_argument( '-tp',   '--X_shift_p',            type=float,             default=0.5,            help='Probabilitas apply X shift' )
     parser.add_argument( '-nr',   '--noise_std_range',      type=float, nargs=2,   default=[0.005,0.02],   help='Rentang std noise' )
     parser.add_argument( '-np',   '--noise_std_p',          type=float,             default=0.5,            help='Probabilitas apply noise' )
     parser.add_argument( '-scr',  '--scale_range',          type=float, nargs=2,   default=[0.95,1.05],    help='Rentang skala intensitas' )
@@ -396,7 +396,7 @@ def run(args: argparse.Namespace = None, **kwargs):
 
     # 2 Bangun dict params untuk pipeline
     params = {
-        'time_shift': {'range': tuple(args.time_shift_range), 'p': args.time_shift_p},
+        'X_shift':    {'range': tuple(args.X_shift_range),    'p': args.X_shift_p},
         'noise_std':  {'range': tuple(args.noise_std_range),  'p': args.noise_std_p},
         'scale':      {'range': tuple(args.scale_range),      'p': args.scale_p},
         'baseline':   {'range': tuple(args.baseline_range),   'p': args.baseline_p, 'nonlinear': args.baseline_nonlinear},
